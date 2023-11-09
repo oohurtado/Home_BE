@@ -40,30 +40,44 @@ namespace ClientApp
             if (input == "1")
             {
                 var url = $"{api_test}/createPerson";
-                await CreateAsync(url, options);
+                await PersonCreateAsync(url, options);
                 return;
             }
 
             if (input == "2")
             {
                 var url = $"{api_test}/getPeople";
-                await ReadAsync(url, options);
+                await PersonReadAsync(url, options);
                 return;
             }
 
             if (input == "3")
+            {
+                var url = $"{api_test}/updatePerson";
+                await PersonUpdateAsync(url, options);
+                return;
+            }
+
+            if (input == "4")
+            {
+                var url = $"{api_test}/deletePerson";
+                await PersonDeleteAsync(url, options);
+                return;
+            }
+
+            if (input == "5")
             {
                 var url = $"{api_test}/getDummy";
                 await DummyAsync(url, options);
                 return;
             }
 
-            if (input == "4")
+            if (input == "6")
             {                
                 await DummySafeAsync(options);
                 return;
             }
-        }       
+        }
 
         /// <summary>
         /// realiza llamada post
@@ -71,7 +85,7 @@ namespace ClientApp
         /// <param name="url"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        private static async Task CreateAsync(string url, JsonSerializerOptions options)
+        private static async Task PersonCreateAsync(string url, JsonSerializerOptions options)
         {
             PersonDTO personDTO = new PersonDTO()
             {
@@ -105,7 +119,7 @@ namespace ClientApp
         /// <param name="url"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        private static async Task ReadAsync(string url, JsonSerializerOptions options)
+        private static async Task PersonReadAsync(string url, JsonSerializerOptions options)
         {           
             {
                 using var httpClient = new HttpClient();
@@ -118,7 +132,25 @@ namespace ClientApp
                 var str = await httpClient.GetStringAsync(url);
                 var people = JsonSerializer.Deserialize<List<PersonDTO>>(str, options);
             }
-        }        
+        }
+
+        private static async Task PersonUpdateAsync(string url, JsonSerializerOptions options)
+        {
+            PersonDTO personDTO = new PersonDTO()
+            {
+                FirstName = "Nahara",
+                LastName = "Brizuela",
+            };
+
+            using var httpClient = new HttpClient();
+            var response = await httpClient.PutAsJsonAsync($"{url}/1", personDTO);
+        }
+
+        private static async Task PersonDeleteAsync(string url, JsonSerializerOptions options)
+        {
+            using var httpClient = new HttpClient();
+            var response = await httpClient.DeleteAsync($"{url}/1");
+        }
 
         /// <summary>
         /// agrega a valores a cabecera y hace get
@@ -163,7 +195,7 @@ namespace ClientApp
             var url_safe = $"{api_test}/getDummySafe";
             string? token = null;
 
-            var signup = false;
+            var signup = true;
             if (signup)
             {
                 var dto = new UserSignUpEditorDTO()

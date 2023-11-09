@@ -32,6 +32,20 @@ namespace Home.Controllers
             return Ok("yay");
         }
 
+        [HttpPut(template: "updatePerson/{id}")]
+        public async Task<ActionResult> UpdatePerson(int id, [FromBody] PersonDTO dto)
+        {
+            await Task.Delay(1);
+            return Ok();
+        }
+
+        [HttpDelete(template: "deletePerson/{id}")]
+        public async Task<ActionResult> DeletePerson(int id)
+        {
+            await Task.Delay(1);
+            return Ok();
+        }
+
         [HttpGet(template: "getDummy")]
         public async Task<ActionResult<DummyDTO>> GetDummy([FromHeader] int xxx = 5)
         {
