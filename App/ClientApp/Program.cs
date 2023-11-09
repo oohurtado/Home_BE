@@ -36,66 +36,66 @@ namespace ClientApp
                 PropertyNameCaseInsensitive = true,
             };
 
-            bool mode = false;
 
-            if (mode)
+
+            if (input == "1")
             {
-
-                if (input == "1")
-                {
-                    await TestHttpClient.PersonCreateAsync(options);
-                    return;
-                }
-
-                if (input == "2")
-                {
-                    await TestHttpClient.PersonReadAsync(options);
-                    return;
-                }
-
-                if (input == "3")
-                {
-                    await TestHttpClient.PersonUpdateAsync(options);
-                    return;
-                }
-
-                if (input == "4")
-                {
-                    await TestHttpClient.PersonDeleteAsync(options);
-                    return;
-                }
-
-                if (input == "5")
-                {
-                    await TestHttpClient.DummyAsync(options);
-                    return;
-                }
-
-                if (input == "6")
-                {
-                    await TestHttpClient.DummySafeAsync(options);
-                    return;
-                }
+                await TestHttpClient.PersonCreateAsync(options);
+                return;
             }
-            else 
+
+            if (input == "2")
             {
-                if (input == "1")
-                {
-                    await TestHttpClientFactory.PersonReadAsync(options);
-                    return;
-                }
+                await TestHttpClient.PersonReadAsync(options);
+                return;
+            }
 
-                if (input == "2")
-                {
-                    await TestHttpClientFactory.PersonReadNamedAsync(options);
-                    return;
-                }
+            if (input == "3")
+            {
+                await TestHttpClient.PersonUpdateAsync(options);
+                return;
+            }
 
-                if (input == "3")
-                {
-                    await TestHttpClientFactory.DummyAsync(options);
-                    return;
-                }
+            if (input == "4")
+            {
+                await TestHttpClient.PersonDeleteAsync(options);
+                return;
+            }
+
+            if (input == "5")
+            {
+                await TestHttpClient.DummyAsync(options);
+                return;
+            }
+
+            if (input == "6")
+            {
+                await TestHttpClient.DummySafeAsync(options);
+                return;
+            }
+
+            if (input == "7")
+            {
+                await TestHttpClientFactory.PersonReadAsync(options);
+                return;
+            }
+
+            if (input == "8")
+            {
+                await TestHttpClientFactory.PersonReadNamedAsync(options);
+                return;
+            }
+
+            if (input == "9")
+            {
+                await TestHttpClientFactory.DummyAsync(options);
+                return;
+            }
+
+            if (input == "10")
+            {
+                await TestHttpClientFactory.PersonReadServiceAsync(options);
+                return;
             }
         }
     }

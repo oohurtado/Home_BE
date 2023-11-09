@@ -17,7 +17,9 @@ namespace ClientApp
         static string api_user = "https://localhost:7162/api/user/";
         static string api_weather = "https://localhost:7162/weatherforecast/";
 
-        public static IHttpClientFactory GetHttpClientFactory(bool named = false)
+        static ITestService? _testService;
+
+        public static IHttpClientFactory GetHttpClientFactory(bool named = false, Action extra = null!)
         {
             var serviceCollection = new ServiceCollection();
 
@@ -41,10 +43,20 @@ namespace ClientApp
                 {
                     options.BaseAddress = new Uri(api_weather);
                 });
-            }
-            
+
+                serviceCollection.AddHttpClient<ITestService, TestService>("interface", options =>
+                {
+                    options.BaseAddress = new Uri("https://localhost:7162/api/testhttp/");
+                    options.DefaultRequestHeaders.Add("xxx", "100");
+                });
+            }    
+
+
             var services = serviceCollection.BuildServiceProvider();
             var httpClientFactory = services.GetRequiredService<IHttpClientFactory>();
+
+            _testService = services.GetRequiredService<ITestService>();
+
             return httpClientFactory;
         }
 
@@ -91,6 +103,13 @@ namespace ClientApp
             var response = await httpClient.GetAsync("getDummy");
             var str = await response.Content.ReadAsStringAsync();
             var dummy = JsonSerializer.Deserialize<DummyDTO>(str, options);
+        }
+
+        public static async Task PersonReadServiceAsync(JsonSerializerOptions options)
+        {
+            var httpClientFactory = GetHttpClientFactory(named: true);
+            var httpClient = httpClientFactory.CreateClient("interface");
+            var people = await _testService?.GetPeopleAsync()!;
         }
     }
 }
