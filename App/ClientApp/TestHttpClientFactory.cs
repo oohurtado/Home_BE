@@ -14,7 +14,7 @@ namespace ClientApp
     public class TestHttpClientFactory
     {
         static string api_test = "https://localhost:7162/api/testhttp/";
-        static string api_user = "https://localhost:7162/api/user/";
+        //static string api_user = "https://localhost:7162/api/user/";
         static string api_weather = "https://localhost:7162/weatherforecast/";
 
         static ITestService? _testService;
@@ -31,7 +31,7 @@ namespace ClientApp
             {
                 serviceCollection.AddHttpClient("test-http-1", options =>
                 {
-                    options.BaseAddress = new Uri("https://localhost:7162/api/testhttp/getPeople");
+                    options.BaseAddress = new Uri("https://localhost:7162/api/testhttp/getData");
                 });
                 serviceCollection.AddHttpClient("test-http-2", options =>
                 {
@@ -60,20 +60,20 @@ namespace ClientApp
             return httpClientFactory;
         }
 
-        public static async Task PersonReadAsync(JsonSerializerOptions options)
+        public static async Task DataReadAsync(JsonSerializerOptions options)
         {
             var httpClientFactory = GetHttpClientFactory();
             var httpClient = httpClientFactory.CreateClient();
 
-            var url = $"{api_test}getPeople";
+            var url = $"{api_test}getData";
             var response = await httpClient.GetAsync(url);
             var str = await response.Content.ReadAsStringAsync();
-            var people = JsonSerializer.Deserialize<List<PersonDTO>>(str, options);
+            var data = JsonSerializer.Deserialize<List<TestDTO>>(str, options);
 
             await Task.Delay(1);
         }
 
-        public async static Task PersonReadNamedAsync(JsonSerializerOptions options)
+        public async static Task DataReadNamedAsync(JsonSerializerOptions options)
         {
             var httpClientFactory = GetHttpClientFactory(named: true);
             var httpClient_1 = httpClientFactory.CreateClient("test-http-1");
@@ -82,14 +82,14 @@ namespace ClientApp
             { 
                 var response = await httpClient_1.GetAsync("");
                 var str = await response.Content.ReadAsStringAsync();
-                var people = JsonSerializer.Deserialize<List<PersonDTO>>(str, options);
+                var data = JsonSerializer.Deserialize<List<TestDTO>>(str, options);
             }
 
             {
-                var url = $"getPeople";
+                var url = $"getData";
                 var response = await httpClient_2.GetAsync(url);
                 var str = await response.Content.ReadAsStringAsync();
-                var people = JsonSerializer.Deserialize<List<PersonDTO>>(str, options);
+                var data = JsonSerializer.Deserialize<List<TestDTO>>(str, options);
             }
 
             await Task.Delay(1);
@@ -105,11 +105,11 @@ namespace ClientApp
             var dummy = JsonSerializer.Deserialize<DummyDTO>(str, options);
         }
 
-        public static async Task PersonReadServiceAsync(JsonSerializerOptions options)
+        public static async Task DataReadServiceAsync(JsonSerializerOptions options)
         {
             var httpClientFactory = GetHttpClientFactory(named: true);
             var httpClient = httpClientFactory.CreateClient("interface");
-            var people = await _testService?.GetPeopleAsync()!;
+            var data = await _testService?.GetDataAsync()!;
         }
     }
 }

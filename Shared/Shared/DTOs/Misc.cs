@@ -3,7 +3,7 @@
 // for testings
 namespace Shared.DTOs
 {
-    public class PersonDTO
+    public class TestDTO
     {
         [Required]
         public string? FirstName { get; set; }

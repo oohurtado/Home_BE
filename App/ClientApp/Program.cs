@@ -40,25 +40,25 @@ namespace ClientApp
 
             if (input == "1")
             {
-                await TestHttpClient.PersonCreateAsync(options);
+                await TestHttpClient.DataCreateAsync(options);
                 return;
             }
 
             if (input == "2")
             {
-                await TestHttpClient.PersonReadAsync(options);
+                await TestHttpClient.DataReadAsync(options);
                 return;
             }
 
             if (input == "3")
             {
-                await TestHttpClient.PersonUpdateAsync(options);
+                await TestHttpClient.DataUpdateAsync(options);
                 return;
             }
 
             if (input == "4")
             {
-                await TestHttpClient.PersonDeleteAsync(options);
+                await TestHttpClient.DataDeleteAsync(options);
                 return;
             }
 
@@ -76,13 +76,13 @@ namespace ClientApp
 
             if (input == "7")
             {
-                await TestHttpClientFactory.PersonReadAsync(options);
+                await TestHttpClientFactory.DataReadAsync(options);
                 return;
             }
 
             if (input == "8")
             {
-                await TestHttpClientFactory.PersonReadNamedAsync(options);
+                await TestHttpClientFactory.DataReadNamedAsync(options);
                 return;
             }
 
@@ -94,7 +94,7 @@ namespace ClientApp
 
             if (input == "10")
             {
-                await TestHttpClientFactory.PersonReadServiceAsync(options);
+                await TestHttpClientFactory.DataReadServiceAsync(options);
                 return;
             }
         }

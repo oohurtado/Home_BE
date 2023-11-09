@@ -21,11 +21,11 @@ namespace ClientApp
         /// <param name="url"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static async Task PersonCreateAsync(JsonSerializerOptions options)
+        public static async Task DataCreateAsync(JsonSerializerOptions options)
         {
-            var url = $"{api_test}createPerson";
+            var url = $"{api_test}createData";
 
-            PersonDTO personDTO = new PersonDTO()
+            TestDTO testDTO = new TestDTO()
             {
                 FirstName = "Oliver",
                 LastName = "Hurtado",
@@ -33,7 +33,7 @@ namespace ClientApp
 
             {
                 using var httpClient = new HttpClient();
-                var response = await httpClient.PostAsJsonAsync(url, personDTO);
+                var response = await httpClient.PostAsJsonAsync(url, testDTO);
 
                 await Console.Out.WriteLineAsync($"{response.IsSuccessStatusCode}");
                 var str = await response.Content.ReadAsStringAsync();
@@ -41,7 +41,7 @@ namespace ClientApp
             }
             {
                 using var httpClient = new HttpClient();
-                var str = JsonSerializer.Serialize(personDTO, options);
+                var str = JsonSerializer.Serialize(testDTO, options);
                 var content = new StringContent(str, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(url, content);
 
@@ -57,40 +57,40 @@ namespace ClientApp
         /// <param name="url"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public static async Task PersonReadAsync(JsonSerializerOptions options)
+        public static async Task DataReadAsync(JsonSerializerOptions options)
         {
-            var url = $"{api_test}getPeople";
+            var url = $"{api_test}getData";
 
             {
                 using var httpClient = new HttpClient();
                 var response = await httpClient.GetAsync(url);
                 var str = await response.Content.ReadAsStringAsync();
-                var people = JsonSerializer.Deserialize<List<PersonDTO>>(str, options);
+                var data = JsonSerializer.Deserialize<List<TestDTO>>(str, options);
             }
             {
                 using var httpClient = new HttpClient();
                 var str = await httpClient.GetStringAsync(url);
-                var people = JsonSerializer.Deserialize<List<PersonDTO>>(str, options);
+                var data = JsonSerializer.Deserialize<List<TestDTO>>(str, options);
             }
         }
 
-        public static async Task PersonUpdateAsync(JsonSerializerOptions options)
+        public static async Task DataUpdateAsync(JsonSerializerOptions options)
         {
-            var url = $"{api_test}updatePerson";
+            var url = $"{api_test}updateData";
 
-            PersonDTO personDTO = new PersonDTO()
+            TestDTO testDTO = new TestDTO()
             {
                 FirstName = "Nahara",
                 LastName = "Brizuela",
             };
 
             using var httpClient = new HttpClient();
-            var response = await httpClient.PutAsJsonAsync($"{url}/1", personDTO);
+            var response = await httpClient.PutAsJsonAsync($"{url}/1", testDTO);
         }
 
-        public static async Task PersonDeleteAsync(JsonSerializerOptions options)
+        public static async Task DataDeleteAsync(JsonSerializerOptions options)
         {
-            var url = $"{api_test}deletePerson";
+            var url = $"{api_test}deleteData";
             using var httpClient = new HttpClient();
             var response = await httpClient.DeleteAsync($"{url}/1");
         }

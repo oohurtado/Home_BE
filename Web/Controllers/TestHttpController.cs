@@ -11,13 +11,13 @@ namespace Home.Controllers
     [ApiController]
     public class TestHttpController : ControllerBase
     {
-        [HttpGet(template: "getPeople")]
-        public async Task<ActionResult<List<PersonDTO>>> getPeople()
+        [HttpGet(template: "getData")]
+        public async Task<ActionResult<List<TestDTO>>> getData()
         {
             await Task.Delay(1);
-            return Ok(new List<PersonDTO>()
+            return Ok(new List<TestDTO>()
             {
-                new PersonDTO
+                new TestDTO
                 {
                     FirstName = "Oscar",
                     LastName = "Hurtado",
@@ -25,21 +25,21 @@ namespace Home.Controllers
             });
         }
 
-        [HttpPost(template: "createPerson")]
-        public async Task<ActionResult<PersonDTO>> CreatePerson([FromBody] PersonDTO dto)
+        [HttpPost(template: "createData")]
+        public async Task<ActionResult<TestDTO>> CreatePerson([FromBody] TestDTO dto)
         {
             await Task.Delay(1);
             return Ok("yay");
         }
 
-        [HttpPut(template: "updatePerson/{id}")]
-        public async Task<ActionResult> UpdatePerson(int id, [FromBody] PersonDTO dto)
+        [HttpPut(template: "updateData/{id}")]
+        public async Task<ActionResult> UpdatePerson(int id, [FromBody] TestDTO dto)
         {
             await Task.Delay(1);
             return Ok();
         }
 
-        [HttpDelete(template: "deletePerson/{id}")]
+        [HttpDelete(template: "deleteData/{id}")]
         public async Task<ActionResult> DeletePerson(int id)
         {
             await Task.Delay(1);

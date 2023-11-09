@@ -10,23 +10,23 @@ namespace ClientApp
 {
     public interface ITestService
     {
-        Task<List<PersonDTO>?> GetPeopleAsync();
+        Task<List<TestDTO>?> GetDataAsync();
     }
 
     public class TestService : ITestService
     {
         private readonly HttpClient httpClient;
-        string api_test = "https://localhost:7162/api/testhttp/";
+        //string api_test = "https://localhost:7162/api/testhttp/";
 
         public TestService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }
 
-        public async Task<List<PersonDTO>?> GetPeopleAsync()
+        public async Task<List<TestDTO>?> GetDataAsync()
         {
-            var url = "getPeople";
-            return await httpClient.GetFromJsonAsync<List<PersonDTO>>(url);
+            var url = "getData";
+            return await httpClient.GetFromJsonAsync<List<TestDTO>>(url);
         }
     }
 }
