@@ -9,13 +9,12 @@ namespace ClientApp
 {
     internal class Program
     {
-        static string api_test = "https://localhost:7162/api/testhttp";
-        static string api_user = "https://localhost:7162/api/user";
+
         static async Task Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
 
-            while(true)
+            while (true)
             {
                 Console.Write("Option: ");
                 var input = Console.ReadLine();
@@ -37,211 +36,54 @@ namespace ClientApp
                 PropertyNameCaseInsensitive = true,
             };
 
-            if (input == "1")
+            bool mode = false;
+
+            if (mode)
             {
-                var url = $"{api_test}/createPerson";
-                await PersonCreateAsync(url, options);
-                return;
-            }
 
-            if (input == "2")
-            {
-                var url = $"{api_test}/getPeople";
-                await PersonReadAsync(url, options);
-                return;
-            }
-
-            if (input == "3")
-            {
-                var url = $"{api_test}/updatePerson";
-                await PersonUpdateAsync(url, options);
-                return;
-            }
-
-            if (input == "4")
-            {
-                var url = $"{api_test}/deletePerson";
-                await PersonDeleteAsync(url, options);
-                return;
-            }
-
-            if (input == "5")
-            {
-                var url = $"{api_test}/getDummy";
-                await DummyAsync(url, options);
-                return;
-            }
-
-            if (input == "6")
-            {                
-                await DummySafeAsync(options);
-                return;
-            }
-        }
-
-        /// <summary>
-        /// realiza llamada post
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        private static async Task PersonCreateAsync(string url, JsonSerializerOptions options)
-        {
-            PersonDTO personDTO = new PersonDTO()
-            {
-                FirstName = "Oliver",
-                LastName = "Hurtado",
-            };
-
-            {
-                using var httpClient = new HttpClient();
-                var response = await httpClient.PostAsJsonAsync(url, personDTO);
-
-                await Console.Out.WriteLineAsync($"{response.IsSuccessStatusCode}");
-                var str = await response.Content.ReadAsStringAsync();
-                await Console.Out.WriteLineAsync(str);
-            }
-            {
-                using var httpClient = new HttpClient();
-                var str = JsonSerializer.Serialize(personDTO, options);
-                var content = new StringContent(str, Encoding.UTF8, "application/json");
-                var response = await httpClient.PostAsync(url, content);
-
-                await Console.Out.WriteLineAsync($"{response.IsSuccessStatusCode}");
-                str = await response.Content.ReadAsStringAsync();
-                await Console.Out.WriteLineAsync(str);
-            }
-        }
-
-        /// <summary>
-        /// realiza llamada get
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        private static async Task PersonReadAsync(string url, JsonSerializerOptions options)
-        {           
-            {
-                using var httpClient = new HttpClient();
-                var response = await httpClient.GetAsync(url);
-                var str = await response.Content.ReadAsStringAsync();
-                var people = JsonSerializer.Deserialize<List<PersonDTO>>(str, options);
-            }
-            {
-                using var httpClient = new HttpClient();
-                var str = await httpClient.GetStringAsync(url);
-                var people = JsonSerializer.Deserialize<List<PersonDTO>>(str, options);
-            }
-        }
-
-        private static async Task PersonUpdateAsync(string url, JsonSerializerOptions options)
-        {
-            PersonDTO personDTO = new PersonDTO()
-            {
-                FirstName = "Nahara",
-                LastName = "Brizuela",
-            };
-
-            using var httpClient = new HttpClient();
-            var response = await httpClient.PutAsJsonAsync($"{url}/1", personDTO);
-        }
-
-        private static async Task PersonDeleteAsync(string url, JsonSerializerOptions options)
-        {
-            using var httpClient = new HttpClient();
-            var response = await httpClient.DeleteAsync($"{url}/1");
-        }
-
-        /// <summary>
-        /// agrega a valores a cabecera y hace get
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        private static async Task DummyAsync(string url, JsonSerializerOptions options)
-        {
-            {
-                // header solo afecta primera peticion
-
-                using var httpClient = new HttpClient();
-                using var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
-                requestMessage.Headers.Add("xxx", "10");
-                var response = await httpClient.SendAsync(requestMessage);
-                var str = await response.Content.ReadAsStringAsync();
-                var dummy = JsonSerializer.Deserialize<DummyDTO>(str, options);
-
-                var response2 = await httpClient.GetFromJsonAsync<DummyDTO>(url, options);
-            }
-
-            {
-                // header afecta todas las peticiones
-
-                using var httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Add("xxx", "20");
-                var response2 = await httpClient.GetFromJsonAsync<DummyDTO>(url, options);
-                var response3 = await httpClient.GetFromJsonAsync<DummyDTO>(url, options);
-            }
-        }
-
-        /// <summary>
-        /// agrega token jwt a cabecera y hace get
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        private static async Task DummySafeAsync(JsonSerializerOptions options)
-        {
-            var url_signup = $"{api_user}/signup";
-            var url_login = $"{api_user}/login";
-            var url_safe = $"{api_test}/getDummySafe";
-            string? token = null;
-
-            var signup = true;
-            if (signup)
-            {
-                var dto = new UserSignUpEditorDTO()
+                if (input == "1")
                 {
-                    Email = "xxx@xxx.xxx",
-                    FirstName = "111 111",
-                    LastName = "222 222",
-                    Password = "xxxxxx",
-                };
+                    await TestHttpClient.PersonCreateAsync(options);
+                    return;
+                }
 
-                using var httpClient = new HttpClient();
-                var response = await httpClient.PostAsJsonAsync(url_signup, dto);
-
-                await Console.Out.WriteLineAsync($"{response.IsSuccessStatusCode}");
-                var str = await response.Content.ReadAsStringAsync();
-                await Console.Out.WriteLineAsync(str);
-            }
-
-            var login = true;
-            if (login)
-            {
-                //login
-
-                var dto = new UserLogInEditorDTO()
+                if (input == "2")
                 {
-                    Email = "xxx@xxx.xxx",
-                    Password = "xxxxxx",
-                };
+                    await TestHttpClient.PersonReadAsync(options);
+                    return;
+                }
 
-                using var httpClient = new HttpClient();
-                var response = await httpClient.PostAsJsonAsync(url_login, dto);
+                if (input == "3")
+                {
+                    await TestHttpClient.PersonUpdateAsync(options);
+                    return;
+                }
 
-                await Console.Out.WriteLineAsync($"{response.IsSuccessStatusCode}");
-                var str = await response.Content.ReadAsStringAsync();
-                await Console.Out.WriteLineAsync(str);
+                if (input == "4")
+                {
+                    await TestHttpClient.PersonDeleteAsync(options);
+                    return;
+                }
 
-                var userToken = JsonSerializer.Deserialize<UserTokenDTO>(str, options);
-                token = userToken?.Token;
+                if (input == "5")
+                {
+                    await TestHttpClient.DummyAsync(options);
+                    return;
+                }
+
+                if (input == "6")
+                {
+                    await TestHttpClient.DummySafeAsync(options);
+                    return;
+                }
             }
-
-            var dummySafe = true;
-            if (dummySafe)
+            else 
             {
-                using var httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
-                var response2 = await httpClient.GetFromJsonAsync<DummyDTO>(url_safe, options);
+                if (input == "1")
+                {
+                    await TestHttpClient.PersonCreateAsync(options);
+                    return;
+                }
             }
         }
     }
