@@ -6,6 +6,8 @@ namespace Home.Source.DataBase
 {
     public class DatabaseContext : IdentityDbContext<User>
     {
+        public virtual DbSet<Person> People { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
@@ -15,10 +17,22 @@ namespace Home.Source.DataBase
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Person>().ToTable("People");
+
             builder.Entity<User>(e =>
             {
                 e.Property(p => p.FirstName).IsRequired(required: true).HasMaxLength(25);
                 e.Property(p => p.LastName).IsRequired(required: true).HasMaxLength(25);
+            });
+
+            builder.Entity<Person>(e =>
+            {
+                e.Property(p => p.Id).HasColumnName("PersonId");
+
+                e.Property(p => p.FirstName).IsRequired(required: true).HasMaxLength(25);
+                e.Property(p => p.LastName).IsRequired(required: true).HasMaxLength(25);
+
+                e.HasIndex(p => new { p.FirstName, p.LastName }).IsUnique();
             });
         }
     }
