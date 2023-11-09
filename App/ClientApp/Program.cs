@@ -81,7 +81,19 @@ namespace ClientApp
             {
                 if (input == "1")
                 {
-                    await TestHttpClient.PersonCreateAsync(options);
+                    await TestHttpClientFactory.PersonReadAsync(options);
+                    return;
+                }
+
+                if (input == "2")
+                {
+                    await TestHttpClientFactory.PersonReadNamedAsync(options);
+                    return;
+                }
+
+                if (input == "3")
+                {
+                    await TestHttpClientFactory.DummyAsync(options);
                     return;
                 }
             }

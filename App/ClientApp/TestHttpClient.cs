@@ -12,8 +12,8 @@ namespace ClientApp
 {
     public static class TestHttpClient
     {
-        static string api_test = "https://localhost:7162/api/testhttp";
-        static string api_user = "https://localhost:7162/api/user";
+        static string api_test = "https://localhost:7162/api/testhttp/";
+        static string api_user = "https://localhost:7162/api/user/";
 
         /// <summary>
         /// realiza llamada post
@@ -23,7 +23,7 @@ namespace ClientApp
         /// <returns></returns>
         public static async Task PersonCreateAsync(JsonSerializerOptions options)
         {
-            var url = $"{api_test}/createPerson";
+            var url = $"{api_test}createPerson";
 
             PersonDTO personDTO = new PersonDTO()
             {
@@ -59,7 +59,7 @@ namespace ClientApp
         /// <returns></returns>
         public static async Task PersonReadAsync(JsonSerializerOptions options)
         {
-            var url = $"{api_test}/getPeople";
+            var url = $"{api_test}getPeople";
 
             {
                 using var httpClient = new HttpClient();
@@ -76,7 +76,7 @@ namespace ClientApp
 
         public static async Task PersonUpdateAsync(JsonSerializerOptions options)
         {
-            var url = $"{api_test}/updatePerson";
+            var url = $"{api_test}updatePerson";
 
             PersonDTO personDTO = new PersonDTO()
             {
@@ -90,7 +90,7 @@ namespace ClientApp
 
         public static async Task PersonDeleteAsync(JsonSerializerOptions options)
         {
-            var url = $"{api_test}/deletePerson";
+            var url = $"{api_test}deletePerson";
             using var httpClient = new HttpClient();
             var response = await httpClient.DeleteAsync($"{url}/1");
         }
@@ -103,7 +103,7 @@ namespace ClientApp
         /// <returns></returns>
         public static async Task DummyAsync(JsonSerializerOptions options)
         {
-            var url = $"{api_test}/getDummy";
+            var url = $"{api_test}getDummy";
 
             {
                 // header solo afecta primera peticion
@@ -135,9 +135,9 @@ namespace ClientApp
         /// <returns></returns>
         public static async Task DummySafeAsync(JsonSerializerOptions options)
         {
-            var url_signup = $"{api_user}/signup";
-            var url_login = $"{api_user}/login";
-            var url_safe = $"{api_test}/getDummySafe";
+            var url_signup = $"{api_user}signup";
+            var url_login = $"{api_user}login";
+            var url_safe = $"{api_test}getDummySafe";
             string? token = null;
 
             var signup = true;
