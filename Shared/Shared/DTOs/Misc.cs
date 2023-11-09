@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+// for testings
 namespace Shared.DTOs
 {
     public class PersonDTO
