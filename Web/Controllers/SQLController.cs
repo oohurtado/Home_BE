@@ -19,6 +19,7 @@ namespace Home.Controllers
             connectionString = configuration.GetConnectionString("DefaultConnection")!;
         }
 
+        // llama a sp enviando listado de enteros
         [HttpGet(template: "getPeople")]
         public async Task<ActionResult<List<Person>>> GetPeople()
         {
