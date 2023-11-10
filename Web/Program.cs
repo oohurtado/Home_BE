@@ -102,6 +102,7 @@ namespace Home
 
             // repositories
             builder.Services.AddScoped<IAspNetRepository, AspNetRepository>();
+            builder.Services.AddScoped<ILogRepository, LogRepository>();
 
             // layers
             builder.Services.AddScoped<ConfigurationLayer>();

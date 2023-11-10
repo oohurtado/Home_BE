@@ -1,4 +1,9 @@
 ﻿using Home.Source.BusinessLayer;
+using Home.Source.Data.Infrastructure;
+using Home.Source.Data.Repositories;
+using Home.Source.DataBase;
+using Home.Source.Models;
+using Home.Source.Models.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +16,17 @@ namespace Home.Controllers
     [ApiController]
     public class TestHttpController : ControllerBase
     {
+        private readonly DatabaseContext databaseContext;
+        private readonly IServiceProvider serviceProvider;
+        private readonly ILogRepository logRepository;
+
+        public TestHttpController(DatabaseContext databaseContext, IServiceProvider serviceProvider, ILogRepository logRepository)
+        {
+            this.databaseContext = databaseContext;
+            this.serviceProvider = serviceProvider;
+            this.logRepository = logRepository;
+        }
+
         [HttpGet(template: "getData")]
         public async Task<ActionResult<List<TestDTO>>> getData()
         {
@@ -68,24 +84,72 @@ namespace Home.Controllers
         }
 
         /// <summary>
-        /// Envia ok antes de terminar "bbb", luego termina "bbb"
-        /// prints: aaa 1, aaa 2, bbb 1, bbb 2 
+        /// Envia ok antes de terminar salvado de logs
         /// </summary>
         /// <returns></returns>
-        [HttpGet(template: "forget")]
-        public async Task<ActionResult> Forget()
+        [HttpGet(template: "forget1")]
+        public async Task<ActionResult> Forget1()
         {
-            await Console.Out.WriteLineAsync("Forget aaa 1");
-            await Task.Delay(1);
+            var person = new Person
+            {
+                FirstName = "111",
+                LastName = "111"
+            };
+            databaseContext.People.Add(person);
+            await databaseContext.SaveChangesAsync();
 
             _ = Task.Run(async () => 
             {
-                await Console.Out.WriteLineAsync("Forget bbb 2");
-                await Task.Delay(5000);
-                await Console.Out.WriteLineAsync("Forget bbb 2");
+                try
+                {
+                    await logRepository.SaveLogAsync($"Person saved: {person.FirstName}, {person.LastName}");
+                }
+                catch (Exception ex)
+                {
+                    await Console.Out.WriteLineAsync(ex.Message);
+                }
             });
 
-            await Console.Out.WriteLineAsync("Forget aaa 2");
+            return Ok();
+        }       
+        
+        /// <summary>
+        /// Envia ok antes de terminar salvado de logs
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet(template: "forget2")]
+        public async Task<ActionResult> Forget2()
+        {
+            var person = new Person
+            {
+                FirstName = "222",
+                LastName = "222"
+            };
+            databaseContext.People.Add(person);
+            await databaseContext.SaveChangesAsync();
+
+            _ = Task.Run(async () => 
+            {
+                try
+                {
+                    await using (var scope = serviceProvider.CreateAsyncScope())
+                    {
+                        var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+                    
+                        var log = new Log
+                        {
+                            Comment = $"Person saved: {person.FirstName}, {person.LastName}",
+                        };
+                        dbContext.Logs.Add(log);
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await Console.Out.WriteLineAsync(ex.Message);
+                }
+            });
+
             return Ok();
         }
     }

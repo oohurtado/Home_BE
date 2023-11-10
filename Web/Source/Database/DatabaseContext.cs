@@ -33,8 +33,6 @@ namespace Home.Source.DataBase
 
                 e.Property(p => p.FirstName).IsRequired(required: true).HasMaxLength(25);
                 e.Property(p => p.LastName).IsRequired(required: true).HasMaxLength(25);
-
-                e.HasIndex(p => new { p.FirstName, p.LastName }).IsUnique();
             });
 
 
