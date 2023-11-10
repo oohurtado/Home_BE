@@ -66,5 +66,27 @@ namespace Home.Controllers
                 STR = "Safe",
             });
         }
+
+        /// <summary>
+        /// Envia ok antes de terminar "bbb", luego termina "bbb"
+        /// prints: aaa 1, aaa 2, bbb 1, bbb 2 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet(template: "forget")]
+        public async Task<ActionResult> Forget()
+        {
+            await Console.Out.WriteLineAsync("Forget aaa 1");
+            await Task.Delay(1);
+
+            _ = Task.Run(async () => 
+            {
+                await Console.Out.WriteLineAsync("Forget bbb 2");
+                await Task.Delay(5000);
+                await Console.Out.WriteLineAsync("Forget bbb 2");
+            });
+
+            await Console.Out.WriteLineAsync("Forget aaa 2");
+            return Ok();
+        }
     }
 }
