@@ -1,10 +1,13 @@
 
+using Hangfire;
+using Hangfire.SqlServer;
 using Home.Source.BusinessLayer;
 using Home.Source.Data.Infrastructure;
 using Home.Source.Data.Repositories;
 using Home.Source.DataBase;
 using Home.Source.Hubs;
 using Home.Source.Models.Entities;
+using Home.Source.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
@@ -103,11 +106,34 @@ namespace Home
             // repositories
             builder.Services.AddScoped<IAspNetRepository, AspNetRepository>();
             builder.Services.AddScoped<ILogRepository, LogRepository>();
+            builder.Services.AddScoped<IPeopleRepository, PeopleRepository>();
+
+            // services
+            builder.Services.AddScoped<ITimeService, TimeService>();
 
             // layers
             builder.Services.AddScoped<ConfigurationLayer>();
             builder.Services.AddScoped<SeedLayer>();
             builder.Services.AddScoped<UserLayer>();
+            builder.Services.AddScoped<PeopleLayer>();
+
+            // hangfire
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            // hangfire ... as client
+            builder.Services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true,
+                }));
+            // hangfire ... as server
+            builder.Services.AddHangfireServer(/*options => options.SchedulePollingInterval = TimeSpan.FromSeconds(1)*/);
         }
 
         private static void ConfigureApp(WebApplicationBuilder builder)
@@ -127,6 +153,11 @@ namespace Home
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // hangfire
+            app.UseHangfireDashboard();
+            RecurringJob.AddOrUpdate<ITimeService>("print-time", service => service.PrintTime(), Cron.Minutely);
+            //RecurringJob.AddOrUpdate<ITimeService>("print-time", service => service.PrintTime(), "*/1 * * * *");
 
             app.UseCors(builder => builder
                 .AllowAnyMethod()

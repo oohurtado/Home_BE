@@ -1,4 +1,5 @@
-﻿using Home.Source.BusinessLayer;
+﻿using Hangfire;
+using Home.Source.BusinessLayer;
 using Home.Source.Data.Infrastructure;
 using Home.Source.Data.Repositories;
 using Home.Source.DataBase;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs;
+using System.Xml;
 
 namespace Home.Controllers
 {
@@ -19,12 +21,14 @@ namespace Home.Controllers
         private readonly DatabaseContext databaseContext;
         private readonly IServiceProvider serviceProvider;
         private readonly ILogRepository logRepository;
+        private readonly IBackgroundJobClient backgroundJobClient;
 
-        public TestHttpController(DatabaseContext databaseContext, IServiceProvider serviceProvider, ILogRepository logRepository)
+        public TestHttpController(DatabaseContext databaseContext, IServiceProvider serviceProvider, ILogRepository logRepository, IBackgroundJobClient backgroundJobClient)
         {
             this.databaseContext = databaseContext;
             this.serviceProvider = serviceProvider;
             this.logRepository = logRepository;
+            this.backgroundJobClient = backgroundJobClient;
         }
 
         [HttpGet(template: "getData")]
@@ -42,21 +46,21 @@ namespace Home.Controllers
         }
 
         [HttpPost(template: "createData")]
-        public async Task<ActionResult<TestDTO>> CreatePerson([FromBody] TestDTO dto)
+        public async Task<ActionResult<TestDTO>> CreateData([FromBody] TestDTO dto)
         {
             await Task.Delay(1);
             return Ok("yay");
         }
 
         [HttpPut(template: "updateData/{id}")]
-        public async Task<ActionResult> UpdatePerson(int id, [FromBody] TestDTO dto)
+        public async Task<ActionResult> UpdateData(int id, [FromBody] TestDTO dto)
         {
             await Task.Delay(1);
             return Ok();
         }
 
         [HttpDelete(template: "deleteData/{id}")]
-        public async Task<ActionResult> DeletePerson(int id)
+        public async Task<ActionResult> DeleteData(int id)
         {
             await Task.Delay(1);
             return Ok();
@@ -151,6 +155,24 @@ namespace Home.Controllers
             });
 
             return Ok();
+        }
+
+        [HttpPost(template: "createPerson")]
+        public ActionResult<TestDTO> CreatePerson([FromBody] PersonDTO dto)
+        {
+            //backgroundJobClient.Enqueue(() => Console.WriteLine($"{dto.FirstName} {dto.LastName}") );
+            backgroundJobClient.Enqueue<PeopleLayer>(layer => layer.CreatePersonAsync(dto));
+
+            return Ok("yay");
+        }
+
+        [HttpPost(template: "schedule")]
+        public ActionResult<TestDTO> Schedule([FromBody] PersonDTO dto)
+        {
+            //backgroundJobClient.Enqueue(() => Console.WriteLine($"{dto.FirstName} {dto.LastName}") );
+            var jobId = backgroundJobClient.Schedule<PeopleLayer>(layer => layer.CreatePersonAsync(dto), TimeSpan.FromSeconds(5));
+            backgroundJobClient.ContinueJobWith(jobId,() => Console.WriteLine($"El job con id: {jobId} ha concluido"));
+            return Ok("yay");
         }
     }
 }
