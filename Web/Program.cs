@@ -7,7 +7,8 @@ using Home.Source.Data.Repositories;
 using Home.Source.DataBase;
 using Home.Source.Hubs;
 using Home.Source.Models.Entities;
-using Home.Source.Services;
+using Home.Source.Services.Message;
+using Home.Source.Services.Time;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
@@ -110,6 +111,8 @@ namespace Home
 
             // services
             builder.Services.AddScoped<ITimeService, TimeService>();
+            builder.Services.AddScoped<IMessageService, EmailService>();
+            builder.Services.AddScoped<IMessageService, SMSService>();
 
             // layers
             builder.Services.AddScoped<ConfigurationLayer>();

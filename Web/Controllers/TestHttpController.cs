@@ -32,7 +32,7 @@ namespace Home.Controllers
         }
 
         [HttpGet(template: "getData")]
-        public async Task<ActionResult<List<TestDTO>>> getData()
+        public async Task<ActionResult<List<TestDTO>>> GetData()
         {
             await Task.Delay(1);
             return Ok(new List<TestDTO>()

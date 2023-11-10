@@ -1,4 +1,4 @@
-﻿namespace Home.Source.Services
+﻿namespace Home.Source.Services.Time
 {
     public interface ITimeService
     {
