@@ -7,6 +7,7 @@ using Home.Source.Data.Repositories;
 using Home.Source.DataBase;
 using Home.Source.Hubs;
 using Home.Source.Models.Entities;
+using Home.Source.Services.Github;
 using Home.Source.Services.Message;
 using Home.Source.Services.Time;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -99,7 +100,10 @@ namespace Home
                         ClockSkew = TimeSpan.Zero,
                     };
                 }
-            );            
+            );
+
+            // httpclient
+            builder.Services.AddHttpClient<IGitHubService, GitHubService>();
 
             builder.Services.AddSignalR(p => p.EnableDetailedErrors = true);
             //builder.Services.AddSingleton<IUserIdProvider, UserIdProvider>();
@@ -113,6 +117,7 @@ namespace Home
             builder.Services.AddScoped<ITimeService, TimeService>();
             builder.Services.AddScoped<IMessageService, EmailService>();
             builder.Services.AddScoped<IMessageService, SMSService>();
+            builder.Services.AddScoped<IGitHubService, GitHubService>();
 
             // layers
             builder.Services.AddScoped<ConfigurationLayer>();
