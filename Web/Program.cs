@@ -107,6 +107,12 @@ namespace Home
                 }
             );
 
+            // output cache
+            builder.Services.AddOutputCache(o =>
+            {
+                o.AddPolicy("Policy-People-Get", b => b.Expire(TimeSpan.FromSeconds(120)).Tag("People-Get"));
+            });
+
             // httpclient
             builder.Services.AddHttpClient<IGitHubService, GitHubService>();
 
@@ -166,6 +172,9 @@ namespace Home
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // output cache
+            app.UseOutputCache();
 
             // hangfire
             app.UseHangfireDashboard();
