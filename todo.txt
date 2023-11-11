@@ -1,5 +1,3 @@
-listado de core 7
-https://www.youtube.com/playlist?list=PL0kIvpOlieSOeRaM43V0BQoSyfudFoL3g
 
 Entity Framework Core - 3 Ejemplos con Procedimientos Almacenados
 https://www.youtube.com/watch?v=Fkuw2XZwA7g&t=591s
