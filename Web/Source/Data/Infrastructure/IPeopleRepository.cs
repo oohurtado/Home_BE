@@ -5,5 +5,6 @@ namespace Home.Source.Data.Infrastructure
     public interface IPeopleRepository
     {
         Task CreatePersonAsync(Person person);
+        IQueryable<Person> GetPeople();
     }
 }

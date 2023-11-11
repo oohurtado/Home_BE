@@ -103,7 +103,7 @@ namespace Home.Controllers
         public ActionResult<TestDTO> CreatePerson([FromBody] PersonDTO dto)
         {
             //backgroundJobClient.Enqueue(() => Console.WriteLine($"{dto.FirstName} {dto.LastName}") );
-            backgroundJobClient.Enqueue<PeopleLayer>(layer => layer.CreatePersonAsync(dto));
+            backgroundJobClient.Enqueue<PeopleLayer>(layer => layer.CreatePersonTimeAsync(dto));
 
             return Ok("yay");
         }
@@ -112,7 +112,7 @@ namespace Home.Controllers
         public ActionResult<TestDTO> Schedule([FromBody] PersonDTO dto)
         {
             //backgroundJobClient.Enqueue(() => Console.WriteLine($"{dto.FirstName} {dto.LastName}") );
-            var jobId = backgroundJobClient.Schedule<PeopleLayer>(layer => layer.CreatePersonAsync(dto), TimeSpan.FromSeconds(5));
+            var jobId = backgroundJobClient.Schedule<PeopleLayer>(layer => layer.CreatePersonTimeAsync(dto), TimeSpan.FromSeconds(5));
             backgroundJobClient.ContinueJobWith(jobId, () => Console.WriteLine($"El job con id: {jobId} ha concluido"));
             return Ok("yay");
         }

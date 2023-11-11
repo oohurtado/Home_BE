@@ -18,5 +18,10 @@ namespace Home.Source.Data.Repositories
             databaseContext.Add(person);
             await databaseContext.SaveChangesAsync();
         }
+
+        public IQueryable<Person> GetPeople()
+        {
+            return databaseContext.People.AsQueryable();
+        }
     }
 }
