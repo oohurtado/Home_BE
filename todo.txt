@@ -1,11 +1,8 @@
-listado core 6
-https://www.youtube.com/playlist?list=PL0kIvpOlieSOIt49DUZ1vscKnJZTIg9nE
+Reintentos con Polly | ASP.NET Core | C#
+https://www.youtube.com/watch?v=-ZdQca5C7xA&list=PL0kIvpOlieSOIt49DUZ1vscKnJZTIg9nE&index=11
 
 listado de core 7
 https://www.youtube.com/playlist?list=PL0kIvpOlieSOeRaM43V0BQoSyfudFoL3g
-
-Pasando un Listado o Arreglo a un Procedimiento Almacenado
-https://www.youtube.com/watch?v=Mq2ioLZMMCo
 
 Entity Framework Core - 3 Ejemplos con Procedimientos Almacenados
 https://www.youtube.com/watch?v=Fkuw2XZwA7g&t=591s
