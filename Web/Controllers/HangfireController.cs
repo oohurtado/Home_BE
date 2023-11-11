@@ -38,36 +38,6 @@ namespace Home.Controllers
         {
             var person = new Person
             {
-                FirstName = "111",
-                LastName = "111"
-            };
-            databaseContext.People.Add(person);
-            await databaseContext.SaveChangesAsync();
-
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    await logRepository.SaveLogAsync($"Person saved: {person.FirstName}, {person.LastName}");
-                }
-                catch (Exception ex)
-                {
-                    await Console.Out.WriteLineAsync(ex.Message);
-                }
-            });
-
-            return Ok();
-        }
-
-        /// <summary>
-        /// Envia ok antes de terminar salvado de logs
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet(template: "forget2")]
-        public async Task<ActionResult> Forget2()
-        {
-            var person = new Person
-            {
                 FirstName = "222",
                 LastName = "222"
             };
@@ -89,6 +59,36 @@ namespace Home.Controllers
                         dbContext.Logs.Add(log);
                         await dbContext.SaveChangesAsync();
                     }
+                }
+                catch (Exception ex)
+                {
+                    await Console.Out.WriteLineAsync(ex.Message);
+                }
+            });
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Envia ok antes de terminar salvado de logs
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet(template: "forget2")]
+        public async Task<ActionResult> Forget2()
+        {
+            var person = new Person
+            {
+                FirstName = "111",
+                LastName = "111"
+            };
+            databaseContext.People.Add(person);
+            await databaseContext.SaveChangesAsync();
+
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await logRepository.SaveLogAsync($"Person saved: {person.FirstName}, {person.LastName}");
                 }
                 catch (Exception ex)
                 {
