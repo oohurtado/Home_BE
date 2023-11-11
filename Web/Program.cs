@@ -117,7 +117,7 @@ namespace Home
             builder.Services.AddScoped<ITimeService, TimeService>();
             builder.Services.AddScoped<IMessageService, EmailService>();
             builder.Services.AddScoped<IMessageService, SMSService>();
-            builder.Services.AddScoped<IGitHubService, GitHubService>();
+            builder.Services.AddScoped<IGitHubService, GitHubPollyService>();
 
             // layers
             builder.Services.AddScoped<ConfigurationLayer>();
