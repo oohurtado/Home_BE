@@ -57,3 +57,14 @@
 --BEGIN
 --	SELECT p.PersonId FROM People p
 --END
+
+
+
+
+
+---- Programmability > Stored Procedures
+--CREATE PROCEDURE [dbo].[sp_GetPeople]
+--AS
+--BEGIN
+--	SELECT p.PersonId, p.FirstName, p.LastName FROM People p
+--END

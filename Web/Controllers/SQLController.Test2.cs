@@ -50,15 +50,25 @@ namespace Home.Controllers
             }
 
             return NotFound();
-        }
+        } 
 
+        /*
+         * sp_GetIds
+         */
         [HttpGet(template: "getPeopleIds")]
         public async Task<IEnumerable<PersonIdResult>> GetPeopleIds()
         {
             return await databaseContext.Set<PersonIdResult>().ToListAsync();
         }
-        /*
-         * sp_GetIds
-         */
+
+        [HttpGet(template: "getPeople")]
+        public async Task<ActionResult<List<Person>>> GetPeople()
+        {
+            /*
+             * sp_GetById, @p_id
+             */
+            var people = await databaseContext.People.FromSqlRaw("sp_GetPeople").ToListAsync();
+            return people;
+        }
     }
 }
