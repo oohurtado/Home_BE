@@ -100,6 +100,7 @@ namespace ClientApp
 
             if (input == "11")
             {
+                // semaforoooooooooo falta
                 List<string> cards = await TestTask.GetCadsAsync(nCards: 5);
                 var cardsResult = await TestTask.ProcessCardsAsync(cards);
             }
