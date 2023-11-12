@@ -1,4 +1,15 @@
+GIT
+https://www.youtube.com/playlist?list=PLTd5ehIj0goMCnj6V5NdzSIHBgrIXckGU
+
+RESTful API with .NET Core 3.1
+https://www.youtube.com/playlist?list=PL8lhy0LOIPBszfp9aHLNDUCIfD2sUn0at
 
 BackgroundService & IHostedService
 https://www.youtube.com/watch?v=Qa_jctUKQl4&list=PL0kIvpOlieSMxCFeJvjRV8GlLJ0VNx2LI&index=54
 https://www.youtube.com/watch?v=Winhsds5gVU&list=PL0kIvpOlieSMxCFeJvjRV8GlLJ0VNx2LI&index=55
+
+Dapper crud
+https://www.youtube.com/watch?v=n0zkkoL8eNs
+
+Bash
+https://www.youtube.com/playlist?list=PLT98CRl2KxKGj-VKtApD8-zCqSaN2mD4w
