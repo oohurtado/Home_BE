@@ -1,12 +1,8 @@
-﻿using Home.Source.Data.Repositories;
-using Home.Source.DataBase;
-using Home.Source.Models;
+﻿using Home.Source.Models;
 using Home.Source.Models.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using Shared.DTOs;
 using System.Data;
 

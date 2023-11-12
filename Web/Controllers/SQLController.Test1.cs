@@ -1,7 +1,4 @@
-﻿using Home.Source.Data.Repositories;
-using Home.Source.DataBase;
-using Home.Source.Models.Entities;
-using Microsoft.AspNetCore.Http;
+﻿using Home.Source.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Data;

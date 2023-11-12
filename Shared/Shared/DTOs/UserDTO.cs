@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared.Model_Validations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -27,17 +28,27 @@ namespace Shared.DTOs
         public string Password { get; set; } = null!;
     }
 
-    public class UserSignUpEditorDTO : UserAccessDTO
+    public class UserSignUpEditorDTO : UserAccessDTO, IValidatableObject
     {
         [Display(Name = "First name")]
         [Required(ErrorMessage = "The field {0} is mandatory")]
         [StringLength(25, MinimumLength = 3, ErrorMessage = "The field {0} must be between {2} and {1} characters")]
+        [FirstLetterToUpper]
         public string? FirstName { get; set; }
 
         [Display(Name = "Last name")]
         [Required(ErrorMessage = "The field {0} is mandatory")]
         [StringLength(25, MinimumLength = 3, ErrorMessage = "The field {0} must be between {2} and {1} characters")]
+        [FirstLetterToUpper]
         public string? LastName { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (!string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName) && FirstName == LastName)
+            {
+                yield return new ValidationResult("First name and Last name cannot be the same", new string[] { nameof(FirstName), nameof(LastName) });
+            }
+        }
     }
 
     public class UserLogInEditorDTO : UserAccessDTO

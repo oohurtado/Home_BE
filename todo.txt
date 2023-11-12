@@ -1,8 +1,8 @@
-GIT
-https://www.youtube.com/playlist?list=PLTd5ehIj0goMCnj6V5NdzSIHBgrIXckGU
-
 RESTful API with .NET Core 3.1
 https://www.youtube.com/playlist?list=PL8lhy0LOIPBszfp9aHLNDUCIfD2sUn0at
+
+GIT
+https://www.youtube.com/playlist?list=PLTd5ehIj0goMCnj6V5NdzSIHBgrIXckGU
 
 BackgroundService & IHostedService
 https://www.youtube.com/watch?v=Qa_jctUKQl4&list=PL0kIvpOlieSMxCFeJvjRV8GlLJ0VNx2LI&index=54
