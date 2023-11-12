@@ -97,6 +97,12 @@ namespace ClientApp
                 await TestHttpClientFactory.DataReadServiceAsync(options);
                 return;
             }
+
+            if (input == "11")
+            {
+                List<string> cards = await TestTask.GetCadsAsync(nCards: 5);
+                var cardsResult = await TestTask.ProcessCardsAsync(cards);
+            }
         }
     }
 }

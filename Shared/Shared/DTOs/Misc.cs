@@ -16,4 +16,11 @@ namespace Shared.DTOs
     {
         public string? STR { get; set; }
     }
+
+    public class CardProcessed
+    {
+        public string? Card { get; set; }
+        public bool? Rejected { get; set; }
+    }
+        
 }
