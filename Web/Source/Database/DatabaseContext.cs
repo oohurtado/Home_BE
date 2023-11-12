@@ -42,6 +42,9 @@ namespace Home.Source.DataBase
 
                 e.Property(p => p.Comment).IsRequired(required: true).HasMaxLength(100);
             });
+
+            builder.Entity<PersonIdResult>()
+                .ToSqlQuery("EXEC sp_GetIds");
         }
     }
 }

@@ -1,3 +1,7 @@
 
 Entity Framework Core - 3 Ejemplos con Procedimientos Almacenados
 https://www.youtube.com/watch?v=Fkuw2XZwA7g&t=591s
+
+- llamar procedimiento almacenado
+- llamar a 2 hilos mismo tipo de resultado
+- llamar a 2 hilos diferente tipo de resultado

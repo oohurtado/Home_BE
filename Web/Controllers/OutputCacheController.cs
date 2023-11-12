@@ -10,12 +10,12 @@ namespace Home.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeopleController : ControllerBase
+    public class OutputCacheController : ControllerBase
     {
         private readonly PeopleLayer peopleLayer;
         private readonly IOutputCacheStore outputCacheStore;
 
-        public PeopleController(PeopleLayer peopleLayer, IOutputCacheStore outputCacheStore)
+        public OutputCacheController(PeopleLayer peopleLayer, IOutputCacheStore outputCacheStore)
         {
             this.peopleLayer = peopleLayer;
             this.outputCacheStore = outputCacheStore;
