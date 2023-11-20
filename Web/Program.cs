@@ -10,6 +10,7 @@ using Home.Source.Models.Entities;
 using Home.Source.Services.Github;
 using Home.Source.Services.Message;
 using Home.Source.Services.Time;
+using Home.Source.Services.WorkerX;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
@@ -41,7 +42,10 @@ namespace Home
                 {
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                });            
+                });
+
+            //builder.Services.AddHostedService<BackgroundWorkerService1>();
+            builder.Services.AddHostedService<BackgroundWorkerService2>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -136,23 +140,23 @@ namespace Home
             builder.Services.AddScoped<UserLayer>();
             builder.Services.AddScoped<PeopleLayer>();
 
-            // hangfire
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            // hangfire ... as client
-            builder.Services.AddHangfire(configuration => configuration
-                .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
-                .UseSimpleAssemblyNameTypeSerializer()
-                .UseRecommendedSerializerSettings()
-                .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
-                {
-                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                    QueuePollInterval = TimeSpan.Zero,
-                    UseRecommendedIsolationLevel = true,
-                    DisableGlobalLocks = true,
-                }));
-            // hangfire ... as server
-            builder.Services.AddHangfireServer(/*options => options.SchedulePollingInterval = TimeSpan.FromSeconds(1)*/);
+            //// hangfire
+            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            //// hangfire ... as client
+            //builder.Services.AddHangfire(configuration => configuration
+            //    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+            //    .UseSimpleAssemblyNameTypeSerializer()
+            //    .UseRecommendedSerializerSettings()
+            //    .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
+            //    {
+            //        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+            //        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+            //        QueuePollInterval = TimeSpan.Zero,
+            //        UseRecommendedIsolationLevel = true,
+            //        DisableGlobalLocks = true,
+            //    }));
+            //// hangfire ... as server
+            //builder.Services.AddHangfireServer(/*options => options.SchedulePollingInterval = TimeSpan.FromSeconds(1)*/);
         }
 
         private static void ConfigureApp(WebApplicationBuilder builder)
@@ -176,10 +180,10 @@ namespace Home
             // output cache
             app.UseOutputCache();
 
-            // hangfire
-            app.UseHangfireDashboard();
-            RecurringJob.AddOrUpdate<ITimeService>("print-time", service => service.PrintTime(), Cron.Minutely);
-            //RecurringJob.AddOrUpdate<ITimeService>("print-time", service => service.PrintTime(), "*/1 * * * *");
+            //// hangfire
+            //app.UseHangfireDashboard();
+            //RecurringJob.AddOrUpdate<ITimeService>("print-time", service => service.PrintTime(), Cron.Minutely);
+            ////RecurringJob.AddOrUpdate<ITimeService>("print-time", service => service.PrintTime(), "*/1 * * * *");
 
             app.UseCors(builder => builder
                 .AllowAnyMethod()
